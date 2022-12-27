@@ -6,8 +6,6 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import Axios from "axios";
-import AsyncSelect from "react-select/async";
-//import $ from 'jquery';
 
 
 let margintop = {
@@ -37,11 +35,13 @@ const Header = () => {
     const axios = require('axios').default;
 
     const [incorrect, setIncorrect] = useState(false);
+    const [show,setShow] = useState(false)
 
 
     useEffect(() => {
-        window.scrollTo(0, 0);
 
+        window.scrollTo(0, 0);
+setShow(false)
         const setTimeout = (() => {
 
             $(function () {
@@ -114,7 +114,6 @@ const Header = () => {
             setNoOfRows(noOfRows - 1);
         }
     }
-
     let navigate = useNavigate();
     let axiosConfig = {
         headers: {
@@ -122,50 +121,51 @@ const Header = () => {
         }
     }
     const key = 'UXVpUGVja0BBUElAS0VZQEZPUkBEQVRBQE1JTklORzkxNTY2'
-    const searchedItems = { key, origin, destination, depart_date, adult, infant , child };
+    const searchedItems = { key, origin: origin.split('-')[0], destination: destination.split('-')[0], returned, adult, infant, economyClass, child, depart_date };
     const Submit = (e) => {
         e.preventDefault();
+        // let user_captcha = document.getElementById("user_captcha_input").value;
 
-       // console.log(searchedItems);return false;
-
-        axios.post('http://api.tripplannerpk.com/web/flight-search-result', searchedItems, axiosConfig)
+        axios.post('https://api.tripplanner.ae/web/flight-search-result', searchedItems, axiosConfig)
             .then((response) => {
                 console.log("response: ", response);
-                // console.log(searchedItems)
+
                 if (response.data.status === 'fail') {
-                    console.log(response.data.message);
+                    console.log("if block");
                     setMsg(response.data.message);
                     setIncorrect(true);
-                    alert(response.data.message);
-                    //console.log(searchedItems)
-
+                    setShow(true)
+                    // alert(response.data.message);
                 }
                 else {
                     console.log("else block");
                     localStorage.setItem('searchedItems', JSON.stringify(searchedItems));
-                    console.log(searchedItems);
+                    console.log(response);
                     navigate('/flight-search-result', { state: { searchedItems } });
                 }
             })
             .catch((err) => {
-                console.log("AXIOS ERROR:555555 ", err);
+                console.log("AXIOS ERROR: ", err);
             })
     }
-    const [data, setData] = useState([])
+    // const [data, setData] = useState([])
     useEffect(() => {
-
-
         const url = "https://api.tripplanner.ae/web/airports?key=UXVpUGVja0BBUElAS0VZQEZPUkBEQVRBQE1JTklORzkxNTY2";
         Axios.post(url).then(function (result) {
-
             setDeparture(result.data.data);
             setArrival(result.data.data);
+
         });
     }, [])
 
     const handleSelectedDate = (dateString) => {
-        // console.log('e================== ', dateString);
+        console.log('e================== ', dateString);
         setDepart_date(dateString[0] + ' - ' + dateString[1]);
+    }
+
+    const customDates = ['2020-04-08', '2020-04-04', '2020-04-02'];
+    const disableCustomDt = current => {
+        return !customDates.includes(current.format('YYYY-MM-DD'));
     }
     return (
         <div>
@@ -178,13 +178,13 @@ const Header = () => {
                             <div className="row">
 
                                 <div className="col-xl-12 col-lg-12 col-md-7 mb-md-2 mb-sm-0 mb-0 mob-top-margin">
-                                    {/*<div className="custom-dropdown cus-down-arrow pr-0">*/}
-                                    {/*    <button className="dropbtn">{returned}<i className="fa fa-angle-down"></i></button>*/}
-                                    {/*    <div className="dropdown-content">*/}
-                                    {/*        <a href="#" data-value="Return" onClick={(e) => { setReturned(e.target.getAttribute('data-value')) }}>Return</a>*/}
-                                    {/*        <a href="#" data-value="any_way" onClick={(e) => { setReturned(e.target.getAttribute('data-value')) }}>Any Way</a>*/}
-                                    {/*    </div>*/}
-                                    {/*</div>*/}
+                                    <div className="custom-dropdown cus-down-arrow pr-0">
+                                        <button className="dropbtn">{returned}<i className="fa fa-angle-down"></i></button>
+                                        <div className="dropdown-content">
+                                            <a href="javascript:void(0)" data-value="Return" onClick={(e) => { setReturned(e.target.getAttribute('data-value')) }}>Return</a>
+                                            <a href="javascript:void(0)" data-value="One_Way" onClick={(e) => { setReturned(e.target.getAttribute('data-value')) }}>One Way</a>
+                                        </div>
+                                    </div>
                                     <div className="custom-dropdown cus-down-arrow cus-down-arrow pr-0">
                                         <button className="dropbtn" onChange={(e) => setAdult(e.target.value)}>Adult <i
                                             className="fa fa-angle-down"></i></button>
@@ -267,8 +267,9 @@ const Header = () => {
                                                     <div
                                                         className="col-xl-3 col-lg-3 col-md-3 col-12 pt-lg-0 pt-4 onClickHide">
                                                         <label className="form-label pl-2">Departure Airport</label>
-                                                        <div className="dep-icon d-none d-lg-block"><img className=""
-                                                            src="assets/img/deperture-icon.png" />
+                                                        <div className="dep-icon d-none d-lg-block">
+                                                            {/*<img className=""*/}
+                                                            {/*src="assets/img/deperture-icon.png" />*/}
                                                         </div>
 
 
@@ -277,75 +278,79 @@ const Header = () => {
                                                         {/*       onChange={(e) => setDeparture(e.target.value)}  />*/}
 
 
-                                                        <Stack spacing={2}>
+                                                        <Stack spacing={2} >
 
                                                             <Autocomplete
                                                                 freeSolo
                                                                 id="free-solo-2-demo"
                                                                 disableClearable
-                                                                autoComplete="off"
-                                                                filterSelectedOptions
-
                                                                 onChange={(event, newValue) => {
                                                                     setOrigin(newValue);
                                                                 }}
-                                                                options={departure.map((option) => option.Code )} renderInput={(params) => {
-                                                                    // console.log(params);
-                                                                    return (
-                                                                        <TextField
-                                                                            {...params}
-                                                                            label=" Going Airport..."
-                                                                            InputProps={{
-                                                                                ...params.InputProps,
-                                                                                type: 'search',
-                                                                            }}
 
-                                                                        />
-                                                                    )
-                                                                }}
+                                                                options={departure.map((option) => option.Code + ' - ' + option.Name + ' ' + ' ' + option.CountryName)} renderInput={(params) => {
+                                                                console.log(params);
+                                                                return (
+                                                                    <TextField
+                                                                        {...params}
+                                                                        label=" Going Airport..."
+                                                                        InputProps={{
+                                                                            ...params.InputProps,
+                                                                            type: 'search',
+                                                                            // required: value?.length === 0,
+                                                                        }}
+                                                                        // {...register("origin")}
+                                                                        // required={value === 0}
+                                                                        helperText={!origin ? <span style={{color: "red"}}>{ show && "Origin field is required"}</span> : ""}
+
+                                                                    />
+                                                                )
+                                                            }}
                                                             />
+                                                            {/* <small >{errors.origin?.message}</small> */}
                                                         </Stack>
                                                     </div>
 
                                                     <div
                                                         className="col-xl-3 col-lg-3 col-md-3 col-12 pt-lg-0 pt-4 onClickHide">
                                                         <label className="form-label pl-2">Arrival Airport</label>
-                                                        <div className="dep-icon d-none d-lg-block"><img className="" src="assets/img/location-icon.png" />
+                                                        <div className="dep-icon d-none d-lg-block">
+                                                            {/*<img className="" src="assets/img/location-icon.png" />*/}
                                                         </div>
 
                                                         <Stack spacing={2}>
 
                                                             <Autocomplete
-
                                                                 freeSolo
                                                                 id="free-solo-2-demo"
                                                                 disableClearable
-                                                                onInputChange={(event, newValue) => {
+                                                                onChange={(event, newValue) => {
                                                                     setDestination(newValue);
                                                                 }}
-                                                                options={arrival.map((option) => option.Code)}
+                                                                options={arrival.map((option) => option.Code + ' - ' + option.Name + ' ' + ' ' + option.CountryName)}
                                                                 renderInput={(params) => (
                                                                     <TextField
                                                                         {...params}
-                                                                        required
                                                                         label=" Arrival Airport..."
                                                                         InputProps={{
                                                                             ...params.InputProps,
                                                                             type: 'search',
                                                                         }}
+                                                                        helperText={!destination ? <span style={{color: "red",height:'10%'}}>{show && "Destination field is required"}</span> : ""}
+
                                                                     />
                                                                 )}
                                                             />
+                                                            {/* {destination === "" ? <span>jjjuuii</span> :  ""} */}
                                                         </Stack>
                                                     </div>
 
                                                     <div className="col-xl-3 col-lg-3 col-md-4 col-12 pt-lg-0 pt-4 onClickHide">
                                                         <label className="form-label pl-2">Departure/Return Date</label>
-                                                        <input onChange={(e)=> setDepart_date(e.target.value)} name="setDepart_date" id="setDepart_date" type="date" className="form-control"></input>
-                                                        {/*<Stack spacing={2}>
-                                                            <Date onChange={setDepart_date} />
-                                                        </Stack>*/}
-                                                    </div>
+                                                        <input onChange={(e) => setDepart_date(e.target.value)}
+                                                               isValidDate={disableCustomDt}
+                                                               name="setDepart_date" id="setDepart_date" type="date" className="form-control" required></input>
+                                                        {depart_date === "" ? <small style={{color:"red" ,height:'100%'}}>{show && "Depart date is required"}</small> : ""}                                                    </div>
 
                                                     {showClass &&
                                                         <div
@@ -376,17 +381,17 @@ const Header = () => {
                                         })}
 
 
-                                        {/*{deleteButton &&*/}
-                                        {/*    <div className="col-sm-12 text-right">*/}
-                                        {/*        <span onClick={Increment} className=" text-orange mr-3"> Add Another City</span>*/}
-                                        {/*        <Link to="/multi-flights">*/}
-                                        {/*            <button className="search-btn px-5"*/}
-                                        {/*                type="submit">SEARCH*/}
-                                        {/*            </button>*/}
-                                        {/*        </Link>*/}
+                                        {deleteButton &&
+                                            <div className="col-sm-12 text-right">
+                                                <span onClick={Increment} className=" text-orange mr-3"> Add Another City</span>
+                                                <Link to="/multi-flights">
+                                                    <button className="search-btn px-5"
+                                                        type="submit">SEARCH
+                                                    </button>
+                                                </Link>
 
-                                        {/*    </div>*/}
-                                        {/*}*/}
+                                            </div>
+                                        }
 
 
                                     </div>

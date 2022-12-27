@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../Components/Navbar";
 import "../Components/tripplanner.css";
 import "../Components/styles.css";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CompaniesLogo from "../Components/CompaniesLogo";
 import Footer from "../Components/Footer";
 import HomeCarousal from "../Components/HomeCarousal";
@@ -11,7 +11,7 @@ import $ from "jquery";
 import Date from "../Components/Date";
 import { popularDestination } from "./ProductData/popularDestination";
 import { TimePicker } from "antd";
-import Axios, {default as axios} from "axios";
+import Axios, { default as axios } from "axios";
 import Stack from "@mui/material/Stack";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
@@ -19,6 +19,8 @@ import { DatePicker, Space } from 'antd';
 import 'antd/dist/antd.css';
 import moment from 'moment';
 import '../Components/tripplanner.css';
+import Loader from "./Loader";
+
 
 let margintop = {
   marginTop: "0px",
@@ -32,9 +34,27 @@ const datePicker = {
 
 const Flight = () => {
   const [value, setValue] = useState();
+  const [noOfRows, setNoOfRows] = useState(1);
+  const [deleteButton, setDeleteButton] = useState(false);
+  const [searchBtn, setSearchBtn] = useState(true);
+  const [showClass, setShowClass] = useState(false);
+  const [departure, setDeparture] = useState([]);
+  const [arrival, setArrival] = useState([]);
+  const [departureAirport, setDepartureAirport] = useState('');
+  const [arrivalAirport, setArrivalAirport] = useState('');
+  const [msg, setMsg] = useState('');
+  const [destination, setDestination] = useState('');
+  const [origin, setOrigin] = useState('');
+  const [incorrect, setIncorrect] = useState(false);
+  const [depart_date, setDepart_date] = useState("");
+  const [spinner , setSpinner] = useState(false)
+  const [show , setShow] = useState(false)
+
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setShow(false)
     document.title = "Flight | Tripplanner ";
   }, []);
 
@@ -69,19 +89,7 @@ const Flight = () => {
     setInfant(infant + 1);
   };
 
-  const [noOfRows, setNoOfRows] = useState(1);
-  const [deleteButton, setDeleteButton] = useState(false);
-  const [searchBtn, setSearchBtn] = useState(true);
-  const [showClass, setShowClass] = useState(false);
-  const [departure, setDeparture] = useState([]);
-  const [arrival, setArrival] = useState([]);
-  const [departureAirport, setDepartureAirport] = useState('');
-  const [arrivalAirport, setArrivalAirport] = useState('');
-  const [msg, setMsg] = useState('');
-  const [destination, setDestination] = useState('');
-  const [origin, setOrigin] = useState('');
-  const [incorrect, setIncorrect] = useState(false);
-const [depart_date,setDepart_date] = useState();
+
 
   const Increment = () => {
     setNoOfRows(noOfRows + 1);
@@ -114,34 +122,36 @@ const [depart_date,setDepart_date] = useState();
     }
   }
   const key = 'UXVpUGVja0BBUElAS0VZQEZPUkBEQVRBQE1JTklORzkxNTY2'
-  const searchedItems = { key, origin, destination, depart_date, adult, infant , child };
+  const searchedItems = { key, origin, destination, depart_date, adult, infant, child };
   const Submit = (e) => {
     e.preventDefault();
 
     // console.log(searchedItems);return false;
-
+    setSpinner(true)
     axios.post('http://api.tripplannerpk.com/web/flight-search-result', searchedItems, axiosConfig)
-        .then((response) => {
-          console.log("response: ", response);
-          // console.log(searchedItems)
-          if (response.data.status === 'fail') {
-            console.log(response.data.message);
-            setMsg(response.data.message);
-            setIncorrect(true);
-            alert(response.data.message);
-            //console.log(searchedItems)
+      .then((response) => {
+        console.log("response: ", response);
+        // console.log(searchedItems)
+        if (response.data.status === 'fail') {
+          console.log(response.data.message);
+          setMsg(response.data.message);
+          setIncorrect(true);
+          // alert(response.data.message);
+          setSpinner(false)
+          //console.log(searchedItems)
+          setShow(true)
 
-          }
-          else {
-            console.log("else block");
-            localStorage.setItem('searchedItems', JSON.stringify(searchedItems));
-            console.log(searchedItems);
-            navigate('/flight-search-result', { state: { searchedItems } });
-          }
-        })
-        .catch((err) => {
-          console.log("AXIOS ERROR:555555 ", err);
-        })
+        }
+        else {
+          console.log("else block");
+          localStorage.setItem('searchedItems', JSON.stringify(searchedItems));
+          console.log(searchedItems);
+          navigate('/flight-search-result', { state: { searchedItems } });
+        }
+      })
+      .catch((err) => {
+        console.log("AXIOS ERROR:555555 ", err);
+      })
   }
   const [data, setData] = useState([])
   useEffect(() => {
@@ -155,6 +165,9 @@ const [depart_date,setDepart_date] = useState();
     });
   }, [])
 
+  if(spinner === true) {
+  return <Loader />
+  }
   return (
     <div >
       <Navbar />
@@ -299,23 +312,21 @@ const [depart_date,setDepart_date] = useState();
                             <label className="form-label pl-2">
                               Departure Airport
                             </label>
-                            <div className="dep-icon d-none d-lg-block"><img className=""
-                                                                             src="assets/img/deperture-icon.png" />
-                            </div>
-                            <Stack spacing={2}>
+                            {/*<div className="dep-icon d-none d-lg-block"><img className=""*/}
+                            {/*  src="assets/img/deperture-icon.png" />*/}
+                            {/*</div>*/}
+                            <Stack spacing={2} >
 
                               <Autocomplete
                                   freeSolo
                                   id="free-solo-2-demo"
                                   disableClearable
-                                  autoComplete="off"
-                                  filterSelectedOptions
-
                                   onChange={(event, newValue) => {
                                     setOrigin(newValue);
                                   }}
-                                  options={departure.map((option) => option.Code )} renderInput={(params) => {
-                                // console.log(params);
+
+                                  options={departure.map((option) => option.Code + ' - ' + option.Name + ' ' + ' ' + option.CountryName)} renderInput={(params) => {
+                                console.log(params);
                                 return (
                                     <TextField
                                         {...params}
@@ -323,12 +334,17 @@ const [depart_date,setDepart_date] = useState();
                                         InputProps={{
                                           ...params.InputProps,
                                           type: 'search',
+                                          // required: value?.length === 0,
                                         }}
+                                        // {...register("origin")}
+                                        // required={value === 0}
+                                        helperText={!origin ? <span style={{color: "red"}}>{show &&"Origin field is required"}</span> : ""}
 
                                     />
                                 )
                               }}
                               />
+                              {/* <small >{errors.origin?.message}</small> */}
                             </Stack>
                           </div>
 
@@ -338,34 +354,35 @@ const [depart_date,setDepart_date] = useState();
                             </label>
                             <div className="dep-icon d-none d-lg-block">
                               {" "}
-                              <img
-                                className=""
-                                src="assets/img/location-icon.png"
-                              />{" "}
+                              {/*<img*/}
+                              {/*  className=""*/}
+                              {/*  src="assets/img/location-icon.png"*/}
+                              {/*/>{" "}*/}
                             </div>
                             <Stack spacing={2}>
 
                               <Autocomplete
-
                                   freeSolo
                                   id="free-solo-2-demo"
                                   disableClearable
-                                  onInputChange={(event, newValue) => {
+                                  onChange={(event, newValue) => {
                                     setDestination(newValue);
                                   }}
-                                  options={arrival.map((option) => option.Code)}
+                                  options={arrival.map((option) => option.Code + ' - ' + option.Name + ' ' + ' ' + option.CountryName)}
                                   renderInput={(params) => (
                                       <TextField
                                           {...params}
-                                          required
                                           label=" Arrival Airport..."
                                           InputProps={{
                                             ...params.InputProps,
                                             type: 'search',
                                           }}
+                                          helperText={!destination ? <span style={{color: "red"}}>{show &&"Destination field is required"}</span> : ""}
+
                                       />
                                   )}
                               />
+                              {/* {destination === "" ? <span>jjjuuii</span> :  ""} */}
                             </Stack>
                           </div>
 
@@ -374,8 +391,8 @@ const [depart_date,setDepart_date] = useState();
                               Departure/Return Date
                             </label>
                             {/*<Date selectedDate={(e) => setValue(e)} />*/}
-                            <input style={datePicker} className="date-picker" onChange={(e)=> setDepart_date(e.target.value)} name="setDepart_date" id="setDepart_date" type="date" className="form-control"></input>
-
+                            <input onChange={(e) => setDepart_date(e.target.value)} name="depart_date" id="depart_date" type="date" className="form-control" required />
+                            {depart_date === "" ? <small style={{color:"red" ,height:'100%'}}>{show && "Depart date is required"}</small> : ""}
                           </div>
 
                           {showClass && (

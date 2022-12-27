@@ -4,6 +4,7 @@ import '../Components/styles.css';
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {validateCaptcha} from "react-simple-captcha";
 
 
 
@@ -29,41 +30,37 @@ const UserLogin = () => {
 
 
 
-  const user = { domain, email };
+  const user = { key, domain, email };
 
   let axiosConfig = {
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
-      mode: 'no-cors',
     }
   };
 
   const submit = (e) => {
     e.preventDefault();
 
-    fetch('https://api.tripplanner.ae/web/forget-password', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json"
-      },
-      body: JSON.stringify(user)
-    }).then(async response => {
-      if (!response.ok) {
-        const validation = await response.json();
-        setMsg(validation.errors);
-        setIncorrect(true);
-      }
-      else {
+    axios.post('https://api.tripplanner.ae/web/forget-password ', user, axiosConfig)
+        .then((response) => {
+          console.log("response: ", response);
 
-        localStorage.setItem('user', JSON.stringify(user));
-        console.log(user);
-        console.log(response.json());
-
-        navigate('/User-login');
-      }
-    });
+          if (response.data.status === 'fail') {
+            console.log("if block");
+            setMsg(response.data.message);
+            setIncorrect(true);
+           // alert(response.data.message);
+          }
+          else {
+           // console.log("else block");
+            localStorage.setItem('user', JSON.stringify(user));
+            console.log("else part", user);
+            navigate('/User-login');
+          }
+        })
+        .catch((err) => {
+          console.log("AXIOS ERROR: ", err);
+        })
   }
   return (
     <div>

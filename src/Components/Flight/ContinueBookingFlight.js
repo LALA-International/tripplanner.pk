@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../Components/Navbar";
 import '../../Components/tripplanner.css';
 import '../../Components/styles.css';
-import { Link } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import CompaniesLogo from "../../Components/CompaniesLogo";
 import Footer from "../../Components/Footer";
 import HomeCarousal from "../../Components/HomeCarousal";
@@ -16,16 +16,16 @@ const ContinueBookingFlight = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
+    fetchingData_SelectedFlight()
   }, [])
 
-
+const location = useLocation()
 
   const [bgColor, setBgColor] = useState(true);
   const [bgColor2, setBgColor2] = useState(false);
   const [noOfRows, setNoOfRows] = useState(1);
   const [deleteButton, setDeleteButton] = useState(false);
-
+  const [booking, setBooking] = useState({});
 
   const Increment = () => {
     setNoOfRows(noOfRows + 1);
@@ -49,17 +49,25 @@ const ContinueBookingFlight = () => {
   }
 
 
+  // const activeStep = () => {
+  //   setBgColor(true);
+  //   setBgColor2(false);
+  //   window.scrollTo(0, 0);
+  //
+  // }
+
   const activeStep = () => {
-    setBgColor(true);
-    setBgColor2(false);
-    window.scrollTo(0, 0);
-
-  }
-
-  const activeStep2 = () => {
     setBgColor(false);
     setBgColor2(true);
     window.scrollTo(0, 0);
+
+  }
+  const fetchingData_SelectedFlight = () => {
+    setBooking(location.state?.passengers);
+
+    // console.log('location: ', location);
+    // console.log('selectedFlight: ', selectedFlight);
+    console.log("passjjjj", booking)
 
   }
 
@@ -150,11 +158,11 @@ const ContinueBookingFlight = () => {
 
                 <div className="container tabs-wrap">
                   <ul className="nav nav-pills nav-pills-bg" role="tablist">
+                    {/*<li role="presentation" className="nav-item">*/}
+                    {/*  <a className={bgColor ? "nav-link  active" : "nav-link nav-bg"} onClick={activeStep2} href="#billing" aria-controls="billing" role="tab" data-toggle="tab" aria-expanded="true">FLIGHT</a>*/}
+                    {/*</li>*/}
                     <li role="presentation" className="nav-item">
-                      <a className={bgColor ? "nav-link  active" : "nav-link nav-bg"} onClick={activeStep} href="#billing" aria-controls="billing" role="tab" data-toggle="tab" aria-expanded="true">FLIGHT</a>
-                    </li>
-                    <li className="nav-item" >
-                      <a className={bgColor2 ? "nav-link  active" : "nav-link nav-bg"} onClick={activeStep2} href="#shipping" aria-controls="shipping" role="tab" data-toggle="tab" aria-expanded="false">PASSENGER</a>
+                      <a className={bgColor2 ? "nav-link  active" : "nav-link nav-bg"  } onClick={activeStep} href="#shipping" aria-controls="shipping" role="tab" data-toggle="tab" aria-expanded="true">PASSENGER</a>
                     </li>
 
                   </ul>
@@ -162,81 +170,81 @@ const ContinueBookingFlight = () => {
 
                   <div className="tab-content">
 
-                    <div role="tabpanel" className="tab-pane active" id="billing">
+                    {/*<div role="tabpanel" className="tab-pane active" id="billing">*/}
 
 
-                      <div className="col-md-offset-3 mt-5">
-                        <div className="sub-title pb-2">Flight Details</div>
-                        <div className="row">
-                          <div className="col-lg-4 col-md-4 col-sm-2 col-12">
-                            <label className="for-color1 pt-2">Booking Date <span>*</span></label>
-                            <div className="enter-name"><input type="Date" /></div>
-                          </div>
-                          <div className="col-lg-4 col-md-4 col-sm-4 col-12">
-                            <label className="for-color1 pt-2">Airline<span>*</span></label>
-                            <div className="enter-name">
-                              <select>
-                                <option>Qatar Airways</option>
-                                <option>Emirates Airline</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-lg-4 col-md-4 col-sm-4 col-12">
-                            <label className="for-color1 pt-2">Trip Mode <span>*</span></label>
-                            <div className="enter-name">
-                              <select>
-                                <option>One Way</option>
-                                <option>Return</option>
-                                <option>Multi City</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-lg-4 col-md-4 col-sm-4 col-12">
-                            <label className="for-color1 pt-4">Sector <span>*</span></label>
-                            <div className="enter-name">
-                              <select>
-                                <option>Please Select</option>
-                                <option>JED APT- JED</option>
-                                <option>JED APT-MAK</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-lg-4 col-md-4 col-sm-4 col-12">
-                            <label className="for-color1 pt-4">Departure/Return Date <span>*</span></label>
-                            <div className="enter-name"><input type="text" name="daterange" className="" value="01/01/2018 - 01/15/2018" /></div>
+                    {/*  <div className="col-md-offset-3 mt-5">*/}
+                    {/*    <div className="sub-title pb-2">Flight Details</div>*/}
+                    {/*    <div className="row">*/}
+                    {/*      <div className="col-lg-4 col-md-4 col-sm-2 col-12">*/}
+                    {/*        <label className="for-color1 pt-2">Booking Date <span>*</span></label>*/}
+                    {/*        <div className="enter-name"><input type="Date" /></div>*/}
+                    {/*      </div>*/}
+                    {/*      <div className="col-lg-4 col-md-4 col-sm-4 col-12">*/}
+                    {/*        <label className="for-color1 pt-2">Airline<span>*</span></label>*/}
+                    {/*        <div className="enter-name">*/}
+                    {/*          <select>*/}
+                    {/*            <option>Qatar Airways</option>*/}
+                    {/*            <option>Emirates Airline</option>*/}
+                    {/*          </select>*/}
+                    {/*        </div>*/}
+                    {/*      </div>*/}
+                    {/*      <div className="col-lg-4 col-md-4 col-sm-4 col-12">*/}
+                    {/*        <label className="for-color1 pt-2">Trip Mode <span>*</span></label>*/}
+                    {/*        <div className="enter-name">*/}
+                    {/*          <select>*/}
+                    {/*            <option>One Way</option>*/}
+                    {/*            <option>Return</option>*/}
+                    {/*            <option>Multi City</option>*/}
+                    {/*          </select>*/}
+                    {/*        </div>*/}
+                    {/*      </div>*/}
+                    {/*      <div className="col-lg-4 col-md-4 col-sm-4 col-12">*/}
+                    {/*        <label className="for-color1 pt-4">Sector <span>*</span></label>*/}
+                    {/*        <div className="enter-name">*/}
+                    {/*          <select>*/}
+                    {/*            <option>Please Select</option>*/}
+                    {/*            <option>JED APT- JED</option>*/}
+                    {/*            <option>JED APT-MAK</option>*/}
+                    {/*          </select>*/}
+                    {/*        </div>*/}
+                    {/*      </div>*/}
+                    {/*      <div className="col-lg-4 col-md-4 col-sm-4 col-12">*/}
+                    {/*        <label className="for-color1 pt-4">Departure/Return Date <span>*</span></label>*/}
+                    {/*        <div className="enter-name"><input type="text" name="daterange" className="" value="01/01/2018 - 01/15/2018" /></div>*/}
 
-                          </div>
-                          <div className="col-lg-4 col-md-4 col-sm-4 col-12">
-                            <label className="for-color1 pt-4">Passenger <span>*</span></label>
-                            <div className="enter-name">
-                              <select>
-                                <option>Please Select</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-12 float-right text-right mt-3">
-                            <a className="btn nav-next-btn continue" onClick={activeStep2} href="#shipping" role="tab" data-toggle="tab" aria-expanded="true">NEXT</a>
-
-
-                          </div>
-                        </div>
-
-                      </div>
+                    {/*      </div>*/}
+                    {/*      <div className="col-lg-4 col-md-4 col-sm-4 col-12">*/}
+                    {/*        <label className="for-color1 pt-4">Passenger <span>*</span></label>*/}
+                    {/*        <div className="enter-name">*/}
+                    {/*          <select>*/}
+                    {/*            <option>Please Select</option>*/}
+                    {/*            <option>1</option>*/}
+                    {/*            <option>2</option>*/}
+                    {/*            <option>3</option>*/}
+                    {/*            <option>4</option>*/}
+                    {/*          </select>*/}
+                    {/*        </div>*/}
+                    {/*      </div>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="row">*/}
+                    {/*      <div className="col-lg-12 float-right text-right mt-3">*/}
+                    {/*        <a className="btn nav-next-btn continue" onClick={activeStep2} href="#shipping" role="tab" data-toggle="tab" aria-expanded="true">NEXT</a>*/}
 
 
-                    </div>
+                    {/*      </div>*/}
+                    {/*    </div>*/}
+
+                    {/*  </div>*/}
+
+
+                    {/*</div>*/}
 
                     <div role="tabpanel" className="tab-pane" id="shipping">
                       {[...Array(noOfRows)].map((elementInArray, index) => {
 
                         return (
-                          <div className="col-md-offset-3 mt-4">
+                          <div className="col-md-offset-3 mt-4 active">
                             <div className="sub-title pb-2 mt-5">Passenger Details</div>
                             <div className="row">
                               <div className="col-lg-3 col-md-3 col-sm-2 col-12">
@@ -322,7 +330,7 @@ const ContinueBookingFlight = () => {
                       <div className="row">
                         <div className="col-lg-12">
                           <div className="float-right mt-3">
-                            <a className="btn nav-next-btn btn-primary back mr-1" onClick={activeStep} href="#billing" role="tab" data-toggle="tab" aria-expanded="true">Previous</a>
+                            {/*<a className="btn nav-next-btn btn-primary back mr-1" onClick={activeStep} href="#billing" role="tab" data-toggle="tab" aria-expanded="true">Previous</a>*/}
                             <Link to="/confirm-flight-booking"><button className="btn nav-next-btn btn-primary nextBtn btn-lg pull-right btn-bg-color" type="button">Continue Booking</button></Link>
                           </div>
                         </div>
