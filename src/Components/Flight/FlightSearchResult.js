@@ -247,7 +247,7 @@ const FlightSearchResult = () => {
                                 <div className="col-xl-4 col-lg-4 col-md-4 col-12 pt-lg-0 pt-4">
                                     <label className="form-label pl-3">Departure/Return Date</label>
                                     {/*<input type="text" value={searchedResult?.depart_date} name="daterange" className="form-control" />*/}
-                                    {/*<input onChange={(e) => setDepart_date(e.target.value)} value={searchedResult?.depart_date} name="setDepart_date" id="setDepart_date" type="date" className="form-control" required></input>*/}
+                                    {/*<input onChange={(e) => setDeparte(e.target.value)} value={searchedResult?.depart_date} name="setDepart_date" id="setDepart_date" type="date" className="form-control" required></input>*/}
                                     {/*{depart_date === "" ? <small style={{ color: "red", height: '100%' }}>{show && "Depart date is required"}</small> : ""}*/}
                                     <TextField
                                         id="date"
