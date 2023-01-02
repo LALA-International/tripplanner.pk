@@ -51,7 +51,7 @@ const SelectedFlight = () => {
     setPassengers(location.state?.searchedResult)
     // console.log('location: ', location);
     // console.log('selectedFlight: ', selectedFlight);
-    console.log("passengers=1=2=3=", passengers)
+    // console.log("passengers=1=2=3=", passengers)
     const flightdetails = {
       Key,
       // origin: searchedResult.origin
@@ -74,10 +74,10 @@ const SelectedFlight = () => {
     return <Loader />
   }
   const pass = [passengers]
-  console.log("pass",pass)
-  const selectedTicket = (key) => {
-    // console.log('selectedTicket: ', key);
-    navigate(`/continue-flight-booking`, { state: { passengers} });
+  // console.log("pass",pass)
+  const selectedTicket = () => {
+
+    navigate(`/continue-flight-booking`, { state: { passengers , selectedFlight} });
 
   }
 
@@ -130,7 +130,7 @@ const SelectedFlight = () => {
             <div className="row mt-5">
               {pass?.map((item,index) => (
               <div className="col-lg-3 col-md-3 d-none d-lg-block d-md-block">
-                {console.log("jjjjj",item)}
+                {/*{console.log("jjjjj",item)}*/}
                 <div className="left-bar">
                   <div className="row">
                     <div className="col-lg-12 col-md-12 col-12">
@@ -158,6 +158,7 @@ const SelectedFlight = () => {
               <div className="col-lg-9 col-md-9">
                 {selectedFlight?.FlightDetails?.Outbound?.map((singleFlight, index) => (
                     <>
+                      {console.log("======selectedFlight======",selectedFlight)}
                       <div className="right-bar p-3 flight-detail">
                         <div className="sub-title"> <img src="assets/img/dep-icon.png" onError={({ currentTarget }) => {
                           currentTarget.onerror = null; // prevents looping
@@ -166,21 +167,22 @@ const SelectedFlight = () => {
                         <div className="fr-br-botm pb-4 mt-3">
                           <div className="row">
                             <div className="col-lg-3 col-md-3 col-6">
-                              <div className="dep-det">{singleFlight.Carrier}</div>
-                              <div className="sub-txt">{singleFlight.FlightNumber}</div>
+                              <div className="dep-det">{singleFlight?.Carrier}</div>
+                    {/* {console.log("======Carrier======",Carrier)} */}
+                              <div className="sub-txt">{singleFlight?.FlightNumber}</div>
                             </div>
                             <div className="col-lg-3 col-md-3 col-6">
-                              <div className="dep-det">{singleFlight.Origin}</div>
-                              <div className="sub-txt"> {singleFlight.DepartTime} - {singleFlight.DepartDate}</div>
+                              <div className="dep-det">{singleFlight?.Origin}</div>
+                              <div className="sub-txt"> {singleFlight?.DepartTime} - {singleFlight?.DepartDate}</div>
                               {/* {/<div className="sub-txt pb-lg-0 pb-md-0 pb-4">20 : 15</div>/} */}
                             </div>
                             <div className="col-lg-3 col-md-3 col-6">
                               <div className="dep-det">Duration Time</div>
-                              <div className="sub-txt">{singleFlight.FlightTime}</div>
+                              <div className="sub-txt">{singleFlight?.FlightTime}</div>
                             </div>
                             <div className="col-lg-3 col-md-3 col-6">
-                              <div className="dep-det">{singleFlight.Destination}</div>
-                              <div className="sub-txt">{singleFlight.ArrTime} - {singleFlight.ArrDate}</div>
+                              <div className="dep-det">{singleFlight?.Destination}</div>
+                              <div className="sub-txt">{singleFlight?.ArrTime} - {singleFlight?.ArrDate}</div>
                               {/* {/<div className="sub-txt">08</div>/} */}
                             </div>
                           </div>
@@ -193,26 +195,28 @@ const SelectedFlight = () => {
                               }} /> Return </div>
                               <div className="row mt-3">
                                 <div className="col-lg-3 col-md-3 col-6">
-                                  <div className="dep-det">{singleFlight.Carrier}</div>
-                                  <div className="sub-txt">{singleFlight.FlightNumber}</div>
+                                  <div className="dep-det">{singleFlight?.Carrier}</div>
+                                  <div className="sub-txt">{singleFlight?.FlightNumber}</div>
                                 </div>
                                 <div className="col-lg-3 col-md-3 col-6">
-                                  <div className="dep-det">{singleReturnFlight.Origin}</div>
-                                  <div className="sub-txt">{singleReturnFlight.DepartTime} - {singleReturnFlight.DepartDate}</div>
+                                  <div className="dep-det">{singleReturnFlight?.Origin}</div>
+                                  <div className="sub-txt">{singleReturnFlight?.DepartTime} - {singleReturnFlight?.DepartDate}</div>
                                   {/* {/<div className="sub-txt pb-lg-0 pb-md-0 pb-4">20 : 15</div>/} */}
                                 </div>
                                 <div className="col-lg-3 col-md-3 col-6">
                                   <div className="dep-det"> Duration Time</div>
-                                  <div className="sub-txt"> {singleReturnFlight.FlightTime}</div>
+                                  <div className="sub-txt"> {singleReturnFlight?.FlightTime}</div>
                                 </div>
                                 <div className="col-lg-3 col-md-3 col-6">
-                                  <div className="dep-det"> {singleReturnFlight.Destination}</div>
-                                  <div className="sub-txt">{singleReturnFlight.ArrTime} - {singleReturnFlight.ArrDate}</div>
+                                  <div className="dep-det"> {singleReturnFlight?.Destination}</div>
+                                  <div className="sub-txt">{singleReturnFlight?.ArrTime} - {singleReturnFlight?.ArrDate}</div>
                                   {/* {/<div className="sub-txt">08</div>/} */}
                                 </div>
                               </div>
                               <div className="text-center mt-2">
-                                <Link to="/continue-flight-booking" > <button className="view-btn"onClick={(e) => selectedTicket()} type="submit">Continue Booking</button></Link>
+                                {/*<Link to="/continue-flight-booking" > */}
+                                  <button className="view-btn"onClick={selectedTicket} type="submit">Continue Booking</button>
+                                {/*</Link>*/}
                               </div>
 
                             </>

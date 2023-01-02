@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import $ from "jquery";
 import Date from "../Components/Date";
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import Axios from "axios";
+const axios = require('axios').default;
 
 
 let margintop = {
     marginTop: "0px",
 }
 
+
 const Header = () => {
 
     const [value, setValue] = useState();
     const [adult, setAdult] = useState(1);
-    const [child, setChild] = useState(0);
-    const [infant, setInfant] = useState(0);
+    const [child, setChild] = useState(1);
+    const [infant, setInfant] = useState(1);
 
     const [noOfRows, setNoOfRows] = useState(1);
     const [deleteButton, setDeleteButton] = useState(false);
@@ -31,17 +33,19 @@ const Header = () => {
     const [returned, setReturned] = useState("Return");
     const [economyClass, setEconomyClass] = useState("Economy Class")
     const [depart_date, setDepart_date] = useState('');
-    const [msg, setMsg] = useState('');
-    const axios = require('axios').default;
+    const [msg, setMsg] = useState();
+    const [show, setShow] = useState(false);
 
     const [incorrect, setIncorrect] = useState(false);
-    const [show,setShow] = useState(false)
+
+
+
+
 
 
     useEffect(() => {
-
         window.scrollTo(0, 0);
-setShow(false)
+        setShow(false)
         const setTimeout = (() => {
 
             $(function () {
@@ -114,6 +118,8 @@ setShow(false)
             setNoOfRows(noOfRows - 1);
         }
     }
+
+
     let navigate = useNavigate();
     let axiosConfig = {
         headers: {
@@ -134,8 +140,9 @@ setShow(false)
                     console.log("if block");
                     setMsg(response.data.message);
                     setIncorrect(true);
+                    console.log("message here", response.data.message)
+
                     setShow(true)
-                    // alert(response.data.message);
                 }
                 else {
                     console.log("else block");
@@ -148,13 +155,11 @@ setShow(false)
                 console.log("AXIOS ERROR: ", err);
             })
     }
-    // const [data, setData] = useState([])
     useEffect(() => {
         const url = "https://api.tripplanner.ae/web/airports?key=UXVpUGVja0BBUElAS0VZQEZPUkBEQVRBQE1JTklORzkxNTY2";
         Axios.post(url).then(function (result) {
             setDeparture(result.data.data);
             setArrival(result.data.data);
-
         });
     }, [])
 
@@ -163,10 +168,10 @@ setShow(false)
         setDepart_date(dateString[0] + ' - ' + dateString[1]);
     }
 
-    const customDates = ['2020-04-08', '2020-04-04', '2020-04-02'];
-    const disableCustomDt = current => {
-        return !customDates.includes(current.format('YYYY-MM-DD'));
-    }
+
+
+
+
     return (
         <div>
             <header className="masthead main-header mob-header">
@@ -182,7 +187,7 @@ setShow(false)
                                         <button className="dropbtn">{returned}<i className="fa fa-angle-down"></i></button>
                                         <div className="dropdown-content">
                                             <a href="javascript:void(0)" data-value="Return" onClick={(e) => { setReturned(e.target.getAttribute('data-value')) }}>Return</a>
-                                            <a href="javascript:void(0)" data-value="One_Way" onClick={(e) => { setReturned(e.target.getAttribute('data-value')) }}>One Way</a>
+                                            <a href="javascript:void(0)" data-value="One_way" onClick={(e) => { setReturned(e.target.getAttribute('data-value')) }}>One Way</a>
                                         </div>
                                     </div>
                                     <div className="custom-dropdown cus-down-arrow cus-down-arrow pr-0">
@@ -243,9 +248,9 @@ setShow(false)
                                             <a href="#" data-value="First Class" onClick={(e) => { setEconomyClass(e.target.getAttribute('data-value')) }}>First Class</a>
                                         </div>
                                     </div>
-                                    {/*<div className="custom-dropdown cus-down-arrow pr-0">*/}
-                                    {/*    <button className="dropbtn multicities" onClick={Increment}>Multi Cities</button>*/}
-                                    {/*</div>*/}
+                                    <div className="custom-dropdown cus-down-arrow pr-0">
+                                        <button className="dropbtn multicities" onClick={Increment}>Multi Cities</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -255,128 +260,137 @@ setShow(false)
                                         {[...Array(noOfRows)].map((elementInArray, index) => {
 
                                             return (
-
-
-                                                <div className="row" style={margintop} key={index}>
-                                                    {deleteButton &&
-                                                        <div className="col-sm-12  text-right">
-                                                            <span onClick={Decrement} className=" text-orange"> <i
-                                                                className="fa fa-close fa-close1"></i></span>
-                                                        </div>
-                                                    }
-                                                    <div
-                                                        className="col-xl-3 col-lg-3 col-md-3 col-12 pt-lg-0 pt-4 onClickHide">
-                                                        <label className="form-label pl-2">Departure Airport</label>
-                                                        <div className="dep-icon d-none d-lg-block">
-                                                            {/*<img className=""*/}
-                                                            {/*src="assets/img/deperture-icon.png" />*/}
-                                                        </div>
-
-
-                                                        {/*<input type="text" className="form-control"*/}
-                                                        {/*       placeholder=" Islamabad (ISB)... " required*/}
-                                                        {/*       onChange={(e) => setDeparture(e.target.value)}  />*/}
-
-
-                                                        <Stack spacing={2} >
-
-                                                            <Autocomplete
-                                                                freeSolo
-                                                                id="free-solo-2-demo"
-                                                                disableClearable
-                                                                onChange={(event, newValue) => {
-                                                                    setOrigin(newValue);
-                                                                }}
-
-                                                                options={departure.map((option) => option.Code + ' - ' + option.Name + ' ' + ' ' + option.CountryName)} renderInput={(params) => {
-                                                                console.log(params);
-                                                                return (
-                                                                    <TextField
-                                                                        {...params}
-                                                                        label=" Going Airport..."
-                                                                        InputProps={{
-                                                                            ...params.InputProps,
-                                                                            type: 'search',
-                                                                            // required: value?.length === 0,
-                                                                        }}
-                                                                        // {...register("origin")}
-                                                                        // required={value === 0}
-                                                                        helperText={!origin ? <span style={{color: "red"}}>{ show && "Origin field is required"}</span> : ""}
-
-                                                                    />
-                                                                )
-                                                            }}
-                                                            />
-                                                            {/* <small >{errors.origin?.message}</small> */}
-                                                        </Stack>
-                                                    </div>
-
-                                                    <div
-                                                        className="col-xl-3 col-lg-3 col-md-3 col-12 pt-lg-0 pt-4 onClickHide">
-                                                        <label className="form-label pl-2">Arrival Airport</label>
-                                                        <div className="dep-icon d-none d-lg-block">
-                                                            {/*<img className="" src="assets/img/location-icon.png" />*/}
-                                                        </div>
-
-                                                        <Stack spacing={2}>
-
-                                                            <Autocomplete
-                                                                freeSolo
-                                                                id="free-solo-2-demo"
-                                                                disableClearable
-                                                                onChange={(event, newValue) => {
-                                                                    setDestination(newValue);
-                                                                }}
-                                                                options={arrival.map((option) => option.Code + ' - ' + option.Name + ' ' + ' ' + option.CountryName)}
-                                                                renderInput={(params) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                        label=" Arrival Airport..."
-                                                                        InputProps={{
-                                                                            ...params.InputProps,
-                                                                            type: 'search',
-                                                                        }}
-                                                                        helperText={!destination ? <span style={{color: "red",height:'10%'}}>{show && "Destination field is required"}</span> : ""}
-
-                                                                    />
-                                                                )}
-                                                            />
-                                                            {/* {destination === "" ? <span>jjjuuii</span> :  ""} */}
-                                                        </Stack>
-                                                    </div>
-
-                                                    <div className="col-xl-3 col-lg-3 col-md-4 col-12 pt-lg-0 pt-4 onClickHide">
-                                                        <label className="form-label pl-2">Departure/Return Date</label>
-                                                        <input onChange={(e) => setDepart_date(e.target.value)}
-                                                               isValidDate={disableCustomDt}
-                                                               name="setDepart_date" id="setDepart_date" type="date" className="form-control" required></input>
-                                                        {depart_date === "" ? <small style={{color:"red" ,height:'100%'}}>{show && "Depart date is required"}</small> : ""}                                                    </div>
-
-                                                    {showClass &&
+                                                <form >
+                                                    <div className="row" style={margintop} key={index}>
+                                                        {deleteButton &&
+                                                            <div className="col-sm-12  text-right">
+                                                                <span onClick={Decrement} className=" text-orange"> <i
+                                                                    className="fa fa-close fa-close1"></i></span>
+                                                            </div>
+                                                        }
                                                         <div
-                                                            className="col-xl-2 col-lg-2 col-12 pt-lg-0 pt-4 onClickHide">
-                                                            <label className="form-label pl-2">Class</label>
-                                                            <select className="form-control">
-                                                                <option>Economy</option>
-                                                                <option>Business</option>
-                                                                <option>Premium</option>
-                                                            </select>
-                                                        </div>
-                                                    }
+                                                            className="col-xl-3 col-lg-3 col-md-3 col-12 pt-lg-0 pt-4 onClickHide">
+                                                            <label className="form-label pl-2">Departure Airport</label>
+                                                            <div className="dep-icon d-none d-lg-block">
+                                                                {/* <img className=""
+                                                                src="assets/img/deperture-icon.png" /> */}
+                                                            </div>
 
-                                                    {searchBtn &&
+
+
+
+                                                            <Stack spacing={2} >
+
+                                                                <Autocomplete
+                                                                    freeSolo
+                                                                    id="free-solo-2-demo"
+                                                                    disableClearable
+                                                                    onChange={(event, newValue) => {
+                                                                        setOrigin(newValue);
+                                                                    }}
+
+                                                                    options={departure.map((option) => option.Code + ' - ' + option.Name + ' ' + ' ' + option.CountryName)} renderInput={(params) => {
+                                                                        console.log(params);
+                                                                        return (
+                                                                            <TextField
+                                                                                {...params}
+                                                                                label=" Going Airport..."
+                                                                                InputProps={{
+                                                                                    ...params.InputProps,
+                                                                                    type: 'search',
+                                                                                }}
+
+                                                                                helperText={!origin ? <span style={{ color: "red" }}>{show && "Origin field is required"}</span> : ""}
+
+                                                                            />
+                                                                        )
+                                                                    }}
+                                                                />
+                                                            </Stack>
+                                                        </div>
+
                                                         <div
-                                                            className="col-xl-2 col-lg-2 col-md-2 col-12 pb-lg-0 pb-0 mt-1 onClickHide">
-                                                            <Link to="/flight-search-result">
+                                                            className="col-xl-3 col-lg-3 col-md-3 col-12 pt-lg-0 pt-4 onClickHide">
+                                                            <label className="form-label pl-2">Arrival Airport</label>
+                                                            <div className="dep-icon d-none d-lg-block">
+                                                                {/* <img className="" src="assets/img/location-icon.png" /> */}
+                                                            </div>
+
+                                                            <Stack spacing={2}>
+
+                                                                <Autocomplete
+                                                                    freeSolo
+                                                                    id="free-solo-2-demo"
+                                                                    disableClearable
+                                                                    onChange={(event, newValue) => {
+                                                                        setDestination(newValue);
+                                                                    }}
+
+                                                                    options={arrival.map((option) => option.Code + ' - ' + option.Name + ' ' + ' ' + option.CountryName)}
+
+                                                                    renderInput={(params) => (
+                                                                        <TextField
+
+                                                                            {...params}
+                                                                            label=" Arrival Airport..."
+
+                                                                            InputProps={{
+                                                                                ...params.InputProps,
+                                                                                type: 'search',
+                                                                                style: {
+                                                                                    color: "black",
+
+                                                                                },
+                                                                            }}
+                                                                            helperText={!destination ? <span style={{ color: "red" }}>{show && "Destination field is required"}</span> : ""}
+
+                                                                        />
+                                                                    )}
+                                                                />
+                                                            </Stack>
+                                                        </div>
+
+                                                        <div className="col-xl-3 col-lg-3 col-md-4 col-12 pt-lg-0 pt-4 onClickHide">
+                                                            <label className="form-label pl-2">Departure Date</label>
+                                                            <TextField
+                                                                id="date"
+                                                                type="date"
+                                                                defaultValue={depart_date}
+                                                                onChange={(e) => setDepart_date(e.target.value)}
+                                                                sx={{ width: 260, backgroundColor: "white" }}
+                                                                InputLabelProps={{
+                                                                    shrink: true
+                                                                }}
+                                                                helperText={depart_date === "" ? <span style={{ color: "red" }}>{show && "Depart date is required "}</span> : ""}
+                                                            />
+                                                        </div>
+
+                                                        {showClass &&
+                                                            <div
+                                                                className="col-xl-2 col-lg-2 col-12 pt-lg-0 pt-4 onClickHide">
+                                                                <label className="form-label pl-2">Class</label>
+                                                                <select className="form-control">
+                                                                    <option>Economy</option>
+                                                                    <option>Business</option>
+                                                                    <option>Premium</option>
+                                                                </select>
+                                                            </div>
+                                                        }
+
+                                                        {searchBtn &&
+                                                            <div
+                                                                className="col-xl-2 col-lg-2 col-md-2 col-12 pb-lg-0 pb-0 mt-2 onClickHide">
+                                                                {/* <Link to="/flight-search-result"> */}
                                                                 <button className="search-btn w-100"
                                                                     type="submit" onClick={Submit}>SEARCH
                                                                 </button>
-                                                            </Link>
-                                                        </div>
-                                                    }
+                                                                {/* </Link> */}
+                                                            </div>
+                                                        }
 
 
-                                                </div>
+                                                    </div>
+                                                </form>
                                             )
                                         })}
 

@@ -11,19 +11,37 @@ import BlackNavbar from "../../Components/BlackNavbar";
 import $ from "jquery";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const ConfirmFlightBooking = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0)
+
+    fetchingData_SelectedFlight()
   }, [])
 
-
+  const location = useLocation();
+  const {  } = useParams()
+  let navigate = useNavigate();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [bookingFlight, setBookingFlight] = useState({});
+  const [contineuFlight, SetContineuFlight] = useState({});
 
+  const fetchingData_SelectedFlight = () => {
+    setBookingFlight(location.state?.booking);
+    SetContineuFlight(location.state?.selectedbookingdetail);
+
+    // console.log('location: ', location);
+    // console.log('selectedFlight: ', selectedFlight);
+
+
+  }
+  console.log("setBookingFlight==", bookingFlight)
+  console.log("SetContineuFlight==", contineuFlight)
+  const book = [bookingFlight]
   return (
     <div>
       <BlackNavbar />
@@ -74,37 +92,52 @@ const ConfirmFlightBooking = () => {
             </div>
           </div>
           <div className="row mt-5">
+            {contineuFlight?.FlightDetails?.Outbound?.map((singleFlight, index) => (
 
-            <div className="col-lg-3 col-md-3 d-none d-lg-block d-md-block">
-              <div className="left-bar">
-                <div className="row">
-                  <div className="col-lg-12 col-md-12 col-12">
-                    <div className="sub-title pl-3 pt-4"> Return Flight </div>
-                    <div className="sub-txt for-tit-bor pl-3 pr-3 pb-3"> 2 tickets - 2 Adults </div>
-                  </div>
+                <div className="col-lg-3 col-md-3 d-none d-lg-block d-md-block">
+                  {book?.map((item,index) => (
+
+                      <div className="left-bar">
+                        {console.log("book====1",book)}
+
+                        {console.log("bookingFlight===1",bookingFlight)}
+                        <div className="row">
+                          <div className="col-lg-12 col-md-12 col-12">
+                            <div className="sub-title pl-3 pt-4"> Return Flight </div>
+                            <div className="sub-txt for-tit-bor pl-3 pr-3 pb-3">  </div>
+                          </div>
+                        </div>
+                        <div className="sub-txt pt-3 pl-3 pr-3 pb-1"> {singleFlight.Origin} to {singleFlight.Destination} </div>
+                        <div className="sub-txt pl-3 pr-3 pb-1"><strong>Depart:{singleFlight.DepartDate} Arrive: {singleFlight.ArrDate}</strong></div>
+                        <div className="sub-txt pl-3 pr-3 pb-1"> {singleFlight.DepartTime} (10h 35m) </div>
+                        <div className="sub-txt pl-3 pr-3 pb-1"> {singleFlight.FlightTime} </div>
+                        <div className="sub-txt pl-3 pr-3 pb-3 for-tit-bor "><strong>{singleFlight.Carrier} {singleFlight.FlightNumber}</strong></div>
+                        {contineuFlight.FlightDetails?.Inbound.map((inItem) => (
+
+                            <>
+                              {console.log("iiiiiii",inItem)}
+                              <div className="sub-txt pt-3 pl-3 pr-3 pb-1"> {inItem.Origin} to {inItem.Destination} </div>
+                              <div className="sub-txt pl-3 pr-3 pb-1"><strong>Depart:{inItem.DepartDate} Arrive: {inItem.ArrDate}</strong></div>
+                              <div className="sub-txt pl-3 pr-3 pb-1">{inItem.DepartTime} (10h 00m)</div>
+                              <div className="sub-txt pl-3 pr-3 pb-1">{inItem.FlightTime}</div>
+                              <div className="sub-txt pl-3 pr-3 pb-3 for-tit-bor "><strong>{inItem.Carrier} {inItem.FlightNumber}</strong> </div>
+                            </>
+                        ))}
+                        <div className="row">
+                          <div className="col-lg-12 col-md-12 col-12">
+                            <div className="sub-title for-tit-bor pl-3 pt-4 pb-2"> Price Details </div>
+                          </div>
+                        </div>
+                        <div className="sub-txt pl-3 pt-3 pr-3 pb-2"><strong> Passenger</strong></div>
+                        <div className="sub-txt pl-3 pr-3 pb-3"> Adult x {item.adult} <span>AED 320</span> </div>
+                        <div className="sub-txt pl-3 pr-3 pb-3"> Child x {item.child} <span>AED 320</span> </div>
+                        <div className="sub-txt pl-3 pr-3 fr-br-botm pb-3"> Infant x {item.infant} <span>AED 320</span> </div>
+                        <div className="sub-title pl-3 pr-3 mt-2 pb-4"> Total <span> 960</span> </div>
+                      </div>
+                  ))}
                 </div>
-                <div className="sub-txt pt-3 pl-3 pr-3 pb-1"> London (LHR) to Dubai (DXB) </div>
-                <div className="sub-txt pl-3 pr-3 pb-1"><strong>Thu, 17 Sep</strong></div>
-                <div className="sub-txt pl-3 pr-3 pb-1"> 09:55 - 23:30 (10h 35m) </div>
-                <div className="sub-txt pl-3 pr-3 pb-1"> 2h 25m stop in AMS </div>
-                <div className="sub-txt pl-3 pr-3 pb-3 for-tit-bor "><strong>Etihad Airline 1008</strong></div>
-                <div className="sub-txt pt-3 pl-3 pr-3 pb-1"> Dubai (DXB) to London (LCY) </div>
-                <div className="sub-txt pl-3 pr-3 pb-1"><strong>Wed, 30 Sep</strong></div>
-                <div className="sub-txt pl-3 pr-3 pb-1">01:10 - 08:10 (10h 00m)</div>
-                <div className="sub-txt pl-3 pr-3 pb-1">1h 45m stop in AMS</div>
-                <div className="sub-txt pl-3 pr-3 pb-3 for-tit-bor "><strong>British Airways 428</strong></div>
-                <div className="row">
-                  <div className="col-lg-12 col-md-12 col-12">
-                    <div className="sub-title for-tit-bor pl-3 pt-4 pb-2"> Price Details </div>
-                  </div>
-                </div>
-                <div className="sub-txt pl-3 pt-3 pr-3 pb-2"><strong> Passenger</strong></div>
-                <div className="sub-txt pl-3 pr-3 pb-3"> Adult x 1 <span>AED 320</span> </div>
-                <div className="sub-txt pl-3 pr-3 pb-3"> Child x 1 <span>AED 320</span> </div>
-                <div className="sub-txt pl-3 pr-3 fr-br-botm pb-3"> Infant x 1 <span>AED 320</span> </div>
-                <div className="sub-title pl-3 pr-3 mt-2 pb-4"> Total <span> 960</span> </div>
-              </div>
-            </div>
+
+            ))}
 
 
 
@@ -146,14 +179,20 @@ const ConfirmFlightBooking = () => {
                 <div className="row mt-4">
                   <div className="col-lg-6 col-md-8">
                     <label className="contnt-detail">Name on Card <span>*</span></label>
-                    <div className="enter-name"><input type="text" value="" placeholder="First and surname" id="fname" name="fname" /></div>
+                    <div className="enter-name"><input type="text" name="Name on Card"
+                                                       // onChange={(e) => setName_on_Card(e.target.value)}
+                                                       placeholder="Name on Card*"
+                                                       required /></div>
                   </div>
                   <div className="col-lg-6 col-md-6"></div>
                 </div>
                 <div className="row mt-4">
                   <div className="col-lg-6 col-md-6">
                     <label className="contnt-detail">Debit / Credit card Number <span>*</span></label>
-                    <div className="enter-name"><input type="text" value="" placeholder="First and surname" id="fname" name="fname" /></div>
+                    <div className="enter-name"><input type="Number" name="Credit card Number"
+                        // onChange={(e) => Credit_card_Number(e.target.value)}
+                                                       placeholder="Credit card Number*"
+                                                       required /></div>
                   </div>
                   <div className="col-lg-6 col-md-6"></div>
                 </div>

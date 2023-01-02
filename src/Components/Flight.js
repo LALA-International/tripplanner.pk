@@ -165,9 +165,9 @@ const Flight = () => {
     });
   }, [])
 
-  if(spinner === true) {
-  return <Loader />
-  }
+  // if(spinner === true) {
+  // return <Loader />
+  // }
   return (
     <div >
       <Navbar />
@@ -386,13 +386,22 @@ const Flight = () => {
                             </Stack>
                           </div>
 
-                          <div className="col-xl-4 col-lg-4 col-md-4 col-12 pt-lg-0 pt-4 onClickHide">
+                          <div className="col-xl-3 col-lg-3 col-md-3 col-12 pt-lg-0 pt-4 onClickHide">
                             <label className="form-label pl-2">
-                              Departure/Return Date
+                              Departure Date
                             </label>
-                            {/*<Date selectedDate={(e) => setValue(e)} />*/}
-                            <input onChange={(e) => setDepart_date(e.target.value)} name="depart_date" id="depart_date" type="date" className="form-control" required />
-                            {depart_date === "" ? <small style={{color:"red" ,height:'100%'}}>{show && "Depart date is required"}</small> : ""}
+                            <TextField
+                                id="date"
+                                type="date"
+
+                                defaultValue={depart_date}
+                                onChange={(e) => setDepart_date(e.target.value)}
+                                sx={{ width: 260, backgroundColor: "white" }}
+                                InputLabelProps={{
+                                  shrink: true
+                                }}
+                                helperText={depart_date === "" ? <span style={{ color: "red" }}>{show && "Depart date is required "}</span> : ""}
+                            />
                           </div>
 
                           {showClass && (
@@ -407,8 +416,7 @@ const Flight = () => {
                           )}
 
                           {searchBtn && (
-                            <div className="col-xl-2 col-lg-2 col-md-2 col-12 pb-lg-0 pb-0 onClickHide">
-                              <Link to="/flight-search-result">
+                            <div className="col-xl-2 col-lg-2 col-md-2 col-12 pb-lg-0 pb-0 mt-2  onClickHide">
                                 <button
                                   className="search-btn w-100"
                                   type="submit"
@@ -416,7 +424,6 @@ const Flight = () => {
                                 >
                                   SEARCH
                                 </button>
-                              </Link>
                             </div>
                           )}
                         </div>
@@ -446,12 +453,12 @@ const Flight = () => {
       </header>
 
       <section className="flight-det pb-lg-5 pb-md-5 pb-sm-3 pb-3">
-        <h1 className="pb-5">Most Popular Flight Destinations</h1>
+        <h1 className="pb-5" style={{marginLeft:"140px"}}>Most Popular Flight Destinations</h1>
         <div className="container">
           <div className="row">
             {popularDestination.map((trip, index) => (
 
-              <div className="col-lg-8 col-md-8 col-12">
+              <div className="col-lg-4 col-md-4 col-12">
                 <div className="image-box">
                   <div className="name-desc hover-1 image-box rounded">
                     <img
