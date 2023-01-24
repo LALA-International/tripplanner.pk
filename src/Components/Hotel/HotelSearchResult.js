@@ -2,19 +2,48 @@ import React , {useState , useEffect} from "react";
 import Navbar from "../../Components/Navbar";
 import '../../Components/tripplanner.css';
 import '../../Components/styles.css';
-import { Link } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import CompaniesLogo from "../../Components/CompaniesLogo";
 import Footer from "../../Components/Footer";
 import HomeCarousal from "../../Components/HomeCarousal";
 import '../../Components/HomeCarousal.css';
 import BlackNavbar from "../../Components/BlackNavbar";
 import $ from "jquery";
+import Date from "../Date";
+import Stack from "@mui/material/Stack";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+// import ReactPaginate from 'react-paginate';
 
 
 const HotelSearchResult = () => {
+    const [searchedResult, setSearchedResult] = useState([]);
+    const [destination, setDestination] = useState([]);
+    // const [itemOffset, setItemOffset] = useState(0);
+    // const [flights, setFlights] = useState({});
+    // const itemsPerPage = 10
+    const location = useLocation();
+    // const pageCount = Math.ceil(Object.keys(flights).length / itemsPerPage);
+
 useEffect(() => {
   window.scrollTo(0, 0)
+    fetchingData_Umrah()
 }, [])
+    const fetchingData_Umrah = () => {
+        setSearchedResult(location.state?.umraSearchedItems);
+
+        // let user_captcha = document.getElementById("user_captcha_input").value;
+
+        };
+
+    console.log('setSearchedResult====', searchedResult)
+    // const handlePageClick = (event, itemsPerPage) => {
+    //     const newOffset = (event.selected * itemsPerPage) % Object.keys(100).length;
+    //     const a = setItemOffset(newOffset);
+    //     // console.log("state", a)
+    //     // console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
+    // };
+
 return(
 <div>
 <BlackNavbar />
@@ -67,19 +96,40 @@ return(
                 <div className="row g-3 needs-validation main-search bot-search-eng p-4 mt-2"  >
                    <div className="col-xl-2 col-lg-2 col-md-6 col-12 pt-lg-0 pt-4">
                       <label className="form-label pl-2">Destination</label>
-                      <input type="text" className="form-control" placeholder=" New York " required />
+                      {/*<input type="text" className="form-control" placeholder=" New York " required />*/}
+                       <Stack spacing={2} >
+                           <Autocomplete
+                               onChange={(e) => setDestination(e.target.value)}
+                               id="Nationality"
+                               freeSolo
+                               options={top100Films.map((option) => option.title)}
+                               renderInput={(params) => <TextField {...params} label="Destination" />}
+                           />
+
+                       </Stack>
                     </div>
                       <div className="col-xl-3 col-lg-3 col-md-6 col-12 pt-lg-0 pt-4">
                         <label className="form-label pl-2">Check In / Check Out</label>
-                        <input type="text" name="daterange" className="form-control" value="01/01/2018 - 01/15/2018" />
+                        {/*<input type="text" name="daterange" className="form-control" value="01/01/2018 - 01/15/2018" />*/}
+                          <Date />
                       </div>
                      <div className="col-xl-2 col-lg-2 col-md-4 col-12 pt-lg-0 pt-4">
                         <label className="form-label pl-2">No of Room</label>
-                        <select className="form-control">
-                          <option>1 Room</option>
-                          <option>2 Room</option>
-                          <option>3 Room</option>
-                        </select>
+                        {/*<select className="form-control">*/}
+                        {/*  <option>1 Room</option>*/}
+                        {/*  <option>2 Room</option>*/}
+                        {/*  <option>3 Room</option>*/}
+                        {/*</select>*/}
+                         <Stack spacing={2} >
+                             <Autocomplete
+                                 onChange={(e) => setDestination(e.target.value)}
+                                 id=""
+                                 freeSolo
+                                 options={top100Films.map((option) => option.NoOfNights)}
+                                 renderInput={(params) => <TextField {...params} label="No of Room" />}
+                             />
+
+                         </Stack>
                       </div>
                     <div className="col-xl-3 col-lg-3 col-md-4 col-12 pt-lg-0 pt-4" >
                         <label className="form-label pl-3">No of Travelers</label>
@@ -577,7 +627,7 @@ return(
                       <div className="room-detail mt-3">
                         <div className="row">
                           <div className="col-lg-8 col-md-8 col-sm-8 col-6">
-                            <div className="dep-det">Deluxe Room <img className="pl-1" src="assets/img/deluxe-room.png" /></div>
+                            <div className="dep-det">Deluxe Room<img className="pl-1" src="assets/img/deluxe-room.png" /></div>
                             <div className="sub-txt mt-2">1 extra-large double bed</div>
                             <div className="sub-txt mt-1"><span className="green-color">FREE cancellation • No prepayment needed</span></div>
                           </div>
@@ -859,6 +909,25 @@ return(
 
      </div>
   </div>
+    {/*<ReactPaginate*/}
+    {/*    breakLabel="..."*/}
+    {/*    nextLabel="next >"*/}
+    {/*    onPageChange={handlePageClick}*/}
+    {/*    pageRangeDisplayed={5}*/}
+    {/*    pageCount={pageCount}*/}
+    {/*    previousLabel={"< previous"}*/}
+    {/*    pageClassName={"page-item"}*/}
+    {/*    pageLinkClassName={"page-link"}*/}
+    {/*    previousClassName={"page-item"}*/}
+    {/*    previousLinkClassName={"page-link"}*/}
+    {/*    nextClassName={"page-item"}*/}
+    {/*    nextLinkClassName={"page-link"}*/}
+    {/*    breakClassName={"page-item"}*/}
+    {/*    breakLinkClassName={"page-link"}*/}
+    {/*    containerClassName={"pagination"}*/}
+    {/*    // activeClassName={"activePage"}*/}
+    {/*    renderOnZeroPageCount={null}*/}
+    {/*/>*/}
 
   <CompaniesLogo />
 
@@ -872,3 +941,22 @@ return(
 }
 
 export default HotelSearchResult;
+const top100Films = [
+    { title: 'The Shawshank Redemption', year: 1994 , NoOfNights:"1", RoomType:"Quad",Roomnumber:"1", },
+    { title: 'The Godfather', year: 1972 , NoOfNights:"2", RoomType:"Dubble",},
+    { title: 'The Godfather: Part II', year: 1974 , NoOfNights:"3"},
+    { title: 'The Dark Knight', year: 2008 , NoOfNights:"4"},
+    { title: '12 Angry Men', year: 1957 , NoOfNights:"5"},
+    { title: "Schindler's List", year: 1993 , NoOfNights:"6"},
+    { title: 'Pulp Fiction', year: 1994 , NoOfNights:"7"},
+    {
+        title: 'The Lord of the Rings: The Return of the King',
+        year: 2003, NoOfNights:"8"
+    },
+    { title: 'The Good, the Bad and the Ugly', year: 1966 , NoOfNights:"9"},
+    { title: 'Fight Club', year: 1999 , NoOfNights:"10"},
+    {
+        title: 'The Lord of the Rings: The Fellowship of the Ring' , NoOfNights:"11" , RoomType:"single",
+        year: 2001,
+    }
+];
