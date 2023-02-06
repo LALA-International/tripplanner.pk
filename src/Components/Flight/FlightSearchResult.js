@@ -169,7 +169,13 @@ const FlightSearchResult = () => {
 
         }
     }
+    const [value, setValue] =  React.useState([2,20]);
 
+    // Changing State when volume increases/decreases
+    const rangeSelector = (event, newValue) => {
+        setValue(newValue);
+        console.log(newValue)
+    };
 
     return (
         <div>
@@ -424,16 +430,22 @@ const FlightSearchResult = () => {
                                     <div className="text-center pt-2">SAR 0 - SAR 2000</div>
                                     <div className="pl-4 pb-4">
                                         {/*<img className="text-center" src="assets/img/price-rang-icon.png" alt="" />*/}
-                                        <Typography id="track-false-slider" gutterBottom>
-                                            Removed track
-                                        </Typography>
-                                        <Slider
-                                            // track={false}
-                                            aria-labelledby="track-false-slider"
-                                            // getAriaValueText={valuetext}
-                                            // defaultValue={30}
-                                            // marks={marks}
-                                        />
+                                        <div style={{
+                                            margin: 'auto',
+                                            display: 'block',
+                                            width: 'fit-content'
+                                        }}>
+                                            {/*<h3>How to create Price Range Selector in ReactJS?</h3>*/}
+                                            <Typography id="range-slider" gutterBottom>
+                                                Select Price Range:
+                                            </Typography>
+                                            <Slider
+                                                value={value}
+                                                onChange={rangeSelector}
+                                                valueLabelDisplay="auto"
+                                            />
+                                            Your range of Price is between {value[0]} /- and {value[1]} /-
+                                        </div>
                                     </div>
                                     <div className="fr-br-botm"></div>
                                     <div className="sub-title pb-2 mt-3">Stops</div>
