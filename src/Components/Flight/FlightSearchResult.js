@@ -19,6 +19,9 @@ import Stack from "@mui/material/Stack";
 import ReactPaginate from 'react-paginate';
 import "../../index.css"
 // import {flightdetails} from "../flight-details";
+import Typography from '@mui/material/Typography';
+import Slider from '@mui/material/Slider';
+
 
 
 const FlightSearchResult = () => {
@@ -35,6 +38,12 @@ const FlightSearchResult = () => {
     const [checkValue, setCheckValue] = useState([])
     const [checkValueInbound, setCheckValueInbound] = useState([])
     const [check, setCheck] = useState(false)
+    const [adult, setAdult] = useState(1);
+    const [child, setChild] = useState(1);
+    const [infant, setInfant] = useState(1);
+    const [returned, setReturned] = useState("Return");
+    const [economyClass, setEconomyClass] = useState("Economy Class")
+
     const [searchedResult, setSearchedResult] = useState({
         key: '',
         origin: '',
@@ -56,6 +65,7 @@ const FlightSearchResult = () => {
         }
     }
     const key = 'UXVpUGVja0BBUElAS0VZQEZPUkBEQVRBQE1JTklORzkxNTY2';
+    // var asd = 'UXVpUGVja0BBUElAS0VZQEZPUkBEQVRBQE1JTklORzkxNTY2';
 
     // console.log("flightdetails", flightdetails);
     //console.log("search results", searchedResult);
@@ -66,6 +76,8 @@ const FlightSearchResult = () => {
         document.title = "Flight Search Result | Tripplanner PK ";
         fetchingData_FlightSearchResult()
     }, [searchedResult]);
+
+    const modifyitem = {origin: origin.split('-')[0],returned,economyClass, destination: destination.split('-')[0],depart_date,adult,child,infant,key }
 
     const fetchingData_FlightSearchResult = () => {
         setSearchedResult(location.state?.searchedItems);
@@ -82,22 +94,36 @@ const FlightSearchResult = () => {
             child: searchedResult?.child,
             depart_date: searchedResult?.depart_date
         };
-        // console.log("flightdetails=1==", searchedResult);
+         console.log("flightdetails=1==", searchedResult);
+        console.log("modifyitem=2==",modifyitem);
         setSpinner(true)
-        axios.post('https://api.tripplanner.ae/web/flight-search-result', flightdetails, axiosConfig)
+        axios.post('https://api.tripplanner.ae/web/flight-search-result', flightdetails, axiosConfig,modifyitem ,key)
             .then((response) => {
-                // console.log("flight response data: ", response);
-
+                console.log("flight response data: ", response);
                 setFlights(response?.data?.data);
                 setSpinner(false)
-
-
-
             })
             .catch((err) => {
                 console.log("AXIOS ERROR: ", err);
             })
     }
+    //  const Data_FlightSearchResult = () => {
+    //     setSearchedResult(location.state?.searchedItems);
+    //      console.log("modifyitem", modifyitem)
+    //     // let user_captcha = document.getElementById("user_captcha_input").value;
+    //
+    //     // console.log("flightdetails=1==", searchedResult);
+    //     setSpinner(true)
+    //     axios.post('https://api.tripplanner.ae/web/flight-search-result',  axiosConfig,modifyitem ,key)
+    //         .then((response) => {
+    //             console.log("flight response data: ", response);
+    //             setFlights(response?.data?.data);
+    //             setSpinner(false)
+    //         })
+    //         .catch((err) => {
+    //             console.log("AXIOS ERROR: ", err);
+    //         })
+    // }
     // console.log("flightdetails:====== ", flights);
     const endOffset = itemOffset + itemsPerPage;
     // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
@@ -110,7 +136,7 @@ const FlightSearchResult = () => {
 
     const selectedTicket = (key) => {
         // console.log('selectedTicket: ', key);
-        navigate(`/selected-flight/detail`, { state: { key , searchedResult} });
+        navigate(`/selected-flight/detail`, { state: { key, searchedResult } });
         // let matchedObj = undefined;
         // Object.keys(flights).map((itemKey) => {
         //   if (key === itemKey) {
@@ -143,7 +169,13 @@ const FlightSearchResult = () => {
 
         }
     }
+    const [value, setValue] =  React.useState([2,20]);
 
+    // Changing State when volume increases/decreases
+    const rangeSelector = (event, newValue) => {
+        setValue(newValue);
+        console.log(newValue)
+    };
 
     return (
         <div>
@@ -152,30 +184,30 @@ const FlightSearchResult = () => {
                 <div className="container">
                     <h1 className="">Your Search Flight</h1>
                     <span className="filter-result float-right w-100 d-block d-lg-none d-md-none">
-            <div className="mobile-container">
-              <div className="topnav">
-                <a href="#home" className="active"></a>
-                <div className="row">
-                  <div className="col-12">
-                    <div id="myLinks">
-                      <a className="for-border-btm" href="#news">
-                        <button type="button" className="btn  airline-btn" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Airlines</button>
-                      </a>
-                      <a className="for-border-btm" href="#contact">
-                        <button type="button" className="btn  airline-btn" data-toggle="modal" data-target="#exampleModa2" data-whatever="@fat">Stop Over</button>
-                      </a>
-                      <a className="for-border-btm" href="#contact">
-                        <button type="button" className="btn  airline-btn" data-toggle="modal" data-target="#exampleModa3" data-whatever="@fat">Departure Airport</button>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <a href="javascript:void(0);" className="icon">
-                  <i className="fa fa-filter" aria-hidden="true"></i>
-                </a>
-              </div>
-            </div>
-          </span>
+                        <div className="mobile-container">
+                            <div className="topnav">
+                                <a href="#home" className="active"></a>
+                                <div className="row">
+                                    <div className="col-12">
+                                        <div id="myLinks">
+                                            <a className="for-border-btm" href="#news">
+                                                <button type="button" className="btn  airline-btn" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Airlines</button>
+                                            </a>
+                                            <a className="for-border-btm" href="#contact">
+                                                <button type="button" className="btn  airline-btn" data-toggle="modal" data-target="#exampleModa2" data-whatever="@fat">Stop Over</button>
+                                            </a>
+                                            <a className="for-border-btm" href="#contact">
+                                                <button type="button" className="btn  airline-btn" data-toggle="modal" data-target="#exampleModa3" data-whatever="@fat">Departure Airport</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="javascript:void(0);" className="icon">
+                                    <i className="fa fa-filter" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </span>
                     <div className="row">
                         <div className="col-lg-12 col-md-12 col-12">
                             <div className="row g-3 needs-validation main-search p-4 bot-search-eng mt-2 m-0" >
@@ -195,21 +227,21 @@ const FlightSearchResult = () => {
                                             }}
 
                                             options={departure.map((option) => option.Code + ' - ' + option.Name + ' ' + ' ' + option.CountryName)} renderInput={(params) => {
-                                            // console.log(params);
-                                            return (
-                                                <TextField
-                                                    value={searchedResult?.origin.split('-')[0]}
-                                                    {...params}
-                                                    label=" Going Airport..."
-                                                    InputProps={{
-                                                        ...params.InputProps,
-                                                        type: 'search',
-                                                    }}
-                                                    helperText={!origin ? <span style={{ color: "red" }}>{show && "Origin field is required"}</span> : ""}
+                                                // console.log(params);
+                                                return (
+                                                    <TextField
+                                                        value={searchedResult?.origin.split('-')[0]}
+                                                            {...params}
+                                                        label=" Going Airport..."
+                                                        InputProps={{
+                                                            ...params.InputProps,
+                                                            type: 'search',
+                                                        }}
+                                                        helperText={!origin ? <span style={{ color: "red" }}>{show && "Origin field is required"}</span> : ""}
 
-                                                />
-                                            )
-                                        }}
+                                                    />
+                                                )
+                                            }}
                                         />
                                     </Stack>
                                 </div>
@@ -231,7 +263,7 @@ const FlightSearchResult = () => {
                                             renderInput={(params) => (
                                                 <TextField
                                                     {...params}
-                                                    label=" Arrival Airport..."
+                                                    s
                                                     InputProps={{
                                                         ...params.InputProps,
                                                         type: 'search',
@@ -247,13 +279,14 @@ const FlightSearchResult = () => {
                                 <div className="col-xl-4 col-lg-4 col-md-4 col-12 pt-lg-0 pt-4">
                                     <label className="form-label pl-3">Departure/Return Date</label>
                                     {/*<input type="text" value={searchedResult?.depart_date} name="daterange" className="form-control" />*/}
-                                    {/*<input onChange={(e) => setDeparte(e.target.value)} value={searchedResult?.depart_date} name="setDepart_date" id="setDepart_date" type="date" className="form-control" required></input>*/}
+                                    {/*<input onChange={(e) => setDepart_date(e.target.value)} value={searchedResult?.depart_date} name="setDepart_date" id="setDepart_date" type="date" className="form-control" required></input>*/}
                                     {/*{depart_date === "" ? <small style={{ color: "red", height: '100%' }}>{show && "Depart date is required"}</small> : ""}*/}
                                     <TextField
                                         id="date"
                                         type="date"
-                                        value={searchedResult?.depart_date}
-                                        onChange={(e) => setDepart_date(e.target.value)} value={searchedResult?.depart_date}
+
+                                        defaultValue={depart_date}
+                                        onChange={(e) => setDepart_date(e.target.value)}
                                         sx={{ width: 260, backgroundColor: "white" }}
                                         InputLabelProps={{
                                             shrink: true
@@ -262,7 +295,9 @@ const FlightSearchResult = () => {
                                     />
                                 </div>
                                 <div className="col-xl-2 col-lg-2 col-md-2 col-12 pb-lg-0 pt-1">
-                                    <a href="flight-search-result.html"><button className="search-btn w-100" type="submit">Modify</button></a>
+                                    {/*<a href="flight-search-result.html">*/}
+                                        <button className="search-btn w-100" type="submit" onClick={()=> fetchingData_FlightSearchResult()}>Modify</button>
+                                    {/*</a>*/}
                                 </div>
                             </div>
                         </div>
@@ -393,7 +428,25 @@ const FlightSearchResult = () => {
                                     <div className="sub-title fr-br-botm pb-4"> <img className="pr-2" src="assets/img/filter-result-icon.png" alt="" /> Filter Result</div>
                                     <div className="sub-title pb-2 pt-4">Price Range</div>
                                     <div className="text-center pt-2">SAR 0 - SAR 2000</div>
-                                    <div className="pl-4 pb-4"><img className="text-center" src="assets/img/price-rang-icon.png" alt="" /></div>
+                                    <div className="pl-4 pb-4">
+                                        {/*<img className="text-center" src="assets/img/price-rang-icon.png" alt="" />*/}
+                                        <div style={{
+                                            margin: 'auto',
+                                            display: 'block',
+                                            width: 'fit-content'
+                                        }}>
+                                            {/*<h3>How to create Price Range Selector in ReactJS?</h3>*/}
+                                            <Typography id="range-slider" gutterBottom>
+                                                Select Price Range:
+                                            </Typography>
+                                            <Slider
+                                                value={value}
+                                                onChange={rangeSelector}
+                                                valueLabelDisplay="auto"
+                                            />
+                                            Your range of Price is between {value[0]} /- and {value[1]} /-
+                                        </div>
+                                    </div>
                                     <div className="fr-br-botm"></div>
                                     <div className="sub-title pb-2 mt-3">Stops</div>
                                     <div className="filter-list fr-br-botm pt-2">
@@ -595,7 +648,7 @@ const FlightSearchResult = () => {
                                                 {/* // </div> */}
 
                                                 <div className="col-lg-2 col-md-12">
-                                                    <div className="flight-fare mt-lg-4 mt-md-4" style={{marginTop:"90px"}}>
+                                                    <div className="flight-fare mt-lg-4 mt-md-4" style={{ marginTop: "90px" }}>
                                                         <div style={{ fontSize: "10px" }} className="total-fare text-center"><span className="curency-sign mt-5 ml-2">{key.FlightPriceDetails.TotalPrice}</span><small className="mt-5"></small></div>
                                                         {/*<Link to={`/selected-flight/${item.Key}`}>*/}
                                                         <button className="view-btn w-100 mt-3  " onClick={(e) => selectedTicket(key)}>Select This:</button>
@@ -648,5 +701,3 @@ const FlightSearchResult = () => {
 }
 
 export default FlightSearchResult;
-
-

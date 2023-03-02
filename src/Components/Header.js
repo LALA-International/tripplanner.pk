@@ -126,6 +126,7 @@ const Header = () => {
             'Content-Type': 'application/json;charset=UTF-8',
         }
     }
+
     const key = 'UXVpUGVja0BBUElAS0VZQEZPUkBEQVRBQE1JTklORzkxNTY2'
     const searchedItems = { key, origin: origin.split('-')[0], destination: destination.split('-')[0], returned, adult, infant, economyClass, child, depart_date };
     const Submit = (e) => {
@@ -134,20 +135,20 @@ const Header = () => {
 
         axios.post('https://api.tripplanner.ae/web/flight-search-result', searchedItems, axiosConfig)
             .then((response) => {
-                console.log("response: ", response);
+                // console.log("response: ", response);
 
                 if (response.data.status === 'fail') {
-                    console.log("if block");
+                    // console.log("if block");
                     setMsg(response.data.message);
                     setIncorrect(true);
-                    console.log("message here", response.data.message)
+                    // console.log("message here", response.data.message)
 
                     setShow(true)
                 }
                 else {
-                    console.log("else block");
+                    // console.log("else block");
                     localStorage.setItem('searchedItems', JSON.stringify(searchedItems));
-                    console.log(response);
+                    // console.log(response);
                     navigate('/flight-search-result', { state: { searchedItems } });
                 }
             })
@@ -164,7 +165,7 @@ const Header = () => {
     }, [])
 
     const handleSelectedDate = (dateString) => {
-        console.log('e================== ', dateString);
+        // console.log('e================== ', dateString);
         setDepart_date(dateString[0] + ' - ' + dateString[1]);
     }
 
@@ -272,8 +273,7 @@ const Header = () => {
                                                             className="col-xl-3 col-lg-3 col-md-3 col-12 pt-lg-0 pt-4 onClickHide">
                                                             <label className="form-label pl-2">Departure Airport</label>
                                                             <div className="dep-icon d-none d-lg-block">
-                                                                {/* <img className=""
-                                                                src="assets/img/deperture-icon.png" /> */}
+                                                                {/*<img className="" src="assets/img/deperture-icon.png" />*/}
                                                             </div>
 
 
@@ -290,7 +290,7 @@ const Header = () => {
                                                                     }}
 
                                                                     options={departure.map((option) => option.Code + ' - ' + option.Name + ' ' + ' ' + option.CountryName)} renderInput={(params) => {
-                                                                        console.log(params);
+                                                                        // console.log(params);
                                                                         return (
                                                                             <TextField
                                                                                 {...params}
@@ -300,12 +300,14 @@ const Header = () => {
                                                                                     type: 'search',
                                                                                 }}
 
+                                                                                // error={origin === "" ? true : false}
                                                                                 helperText={!origin ? <span style={{ color: "red" }}>{show && "Origin field is required"}</span> : ""}
 
                                                                             />
                                                                         )
                                                                     }}
                                                                 />
+                                                                {/* <small >{errors.origin?.message}</small> */}
                                                             </Stack>
                                                         </div>
 
@@ -313,7 +315,7 @@ const Header = () => {
                                                             className="col-xl-3 col-lg-3 col-md-3 col-12 pt-lg-0 pt-4 onClickHide">
                                                             <label className="form-label pl-2">Arrival Airport</label>
                                                             <div className="dep-icon d-none d-lg-block">
-                                                                {/* <img className="" src="assets/img/location-icon.png" /> */}
+                                                                {/*<img className="" src="assets/img/location-icon.png" />*/}
                                                             </div>
 
                                                             <Stack spacing={2}>
@@ -342,6 +344,7 @@ const Header = () => {
 
                                                                                 },
                                                                             }}
+                                                                            // error={destination === "" ? true : false}
                                                                             helperText={!destination ? <span style={{ color: "red" }}>{show && "Destination field is required"}</span> : ""}
 
                                                                         />
@@ -352,9 +355,11 @@ const Header = () => {
 
                                                         <div className="col-xl-3 col-lg-3 col-md-4 col-12 pt-lg-0 pt-4 onClickHide">
                                                             <label className="form-label pl-2">Departure Date</label>
+
                                                             <TextField
                                                                 id="date"
                                                                 type="date"
+
                                                                 defaultValue={depart_date}
                                                                 onChange={(e) => setDepart_date(e.target.value)}
                                                                 sx={{ width: 260, backgroundColor: "white" }}
@@ -363,6 +368,10 @@ const Header = () => {
                                                                 }}
                                                                 helperText={depart_date === "" ? <span style={{ color: "red" }}>{show && "Depart date is required "}</span> : ""}
                                                             />
+
+
+                                                            {/* <input onChange={(e) => setDepart_date(e.target.value)} name="setDepart_date" id="setDepart_date" type="date" className="form-control" required></input> */}
+
                                                         </div>
 
                                                         {showClass &&
