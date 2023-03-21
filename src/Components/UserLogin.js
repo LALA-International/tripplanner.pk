@@ -18,6 +18,7 @@ const UserLogin = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = "Sign In | Tripplanner ";
+    
     setIncorrect(false);
   }, []);
 
@@ -55,7 +56,7 @@ const UserLogin = () => {
       return;
     }
 
-    axios.post('https://api.tripplanner.ae/web/check-login', user, axiosConfig)
+    axios.post('https://panel.umrahfuras.com/test_data.php', user, axiosConfig)
       .then((response) => {
         console.log("response: ", response);
 

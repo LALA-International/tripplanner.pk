@@ -10,8 +10,31 @@ import '../Components/HomeCarousal.css';
 import {popularDestination} from "./ProductData/popularDestination";
 import "../Components/Visa/VisaSearchResultThailand";
 import "../Components/Visa/VisaSearchResultMalaysia";
+import myImage1 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/thailand-visit-visa.jpg';
+import myImage2 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/malaysia-visit-visa.jpg';
+import myImage3 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/dubai-visit-visa.jpg';
+import myImage4 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/azerbaijan-visit-visa.jpg';
+import myImage5 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/bahrain-visit-visa.jpg';
+import myImage6 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/singapore-visit-visa.jpg';
+import myImage7 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/kenya-evisa.jpg';
+import myImage8 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/nepal-visa-from -pakistan.jpg';
+import myImage9 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/seychelles-visa.jpg';
+import myImage10 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/Ivory-Coast-e-visa.jpg';
+import myImage11 from '../../src/Components/Visa/VisaImages/VisaBookingImages/new/saudi-arabia-visit-visa.jpg';
+
 const Visa = () => {
 
+      const myImage1 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/thailand-visit-visa.jpg');
+      const myImage2 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/malaysia-visit-visa.jpg');
+      const myImage3 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/dubai-visit-visa.jpg');
+      const myImage4 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/azerbaijan-visit-visa.jpg');
+      const myImage5 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/bahrain-visit-visa.jpg');
+      const myImage6 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/singapore-visit-visa.jpg');
+      const myImage7 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/kenya-evisa.jpg');
+      const myImage8 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/nepal-visa-from -pakistan.jpg');
+      const myImage9 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/seychelles-visa.jpg');
+      const myImage10 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/Ivory-Coast-e-visa.jpg');
+      const myImage11 = require('../../src/Components/Visa/VisaImages/VisaBookingImages/new/saudi-arabia-visit-visa.jpg');
     useEffect(() => {
         window.scrollTo(0, 0);
         document.title = "Visa | Tripplanner";
@@ -20,7 +43,7 @@ const Visa = () => {
     const popularDestination = [
         {
             "UID": "1",
-            "image": "../../assets/img/visa-img-2.png",
+            "image": myImage1,
             "country": "Thiland",
             "price": "254",
             "currency": "SAR",
@@ -28,46 +51,85 @@ const Visa = () => {
         },
         {
             "UID": "2",
-            "image": "../../assets/img/visa-img-3.png",
-            "country": "India",
+            "image": myImage2,
+            "country": "Malaysia",
             "price": "254",
             "currency": "SAR",
             "path": "/visa-search-resul-malayshia"
         },
         {
             "UID": "3",
-            "image": "../../assets/img/visa-img-4.png",
-            "country": "China",
+            "image": myImage3,
+            "country": "Dubai",
             "price": "254",
             "currency": "SAR",
+            "path": "/visa-search-resul-dubai"
         },
         {
             "UID": "4",
-            "image": "../../assets/img/visa-img-5.png",
-            "country": "Italy",
+            "image": myImage4,
+            "country": "Azerbaijan",
             "price": "254",
             "currency": "SAR",
+            "path": "/visa-search-resul-azerbaijan"
+
         },
         {
             "UID": "5",
-            "image": "../../assets/img/visa-img-6.png",
-            "country": "Pakistan",
+            "image": myImage5,
+            "country": "Bahrain",
             "price": "254",
             "currency": "SAR",
+            "path": "/visa-search-resul-bahrain"
         },
         {
             "UID": "6",
-            "image": "../../assets/img/visa-img-7.png",
-            "country": "United State of America",
+            "image": myImage6,
+            "country": "Singapore",
             "price": "254",
             "currency": "SAR",
+            "path": "/visa-search-resul-singapore"
         },
         {
             "UID": "7",
-            "image": "../../assets/img/visa-img-8.png",
-            "country": "Thailand",
+            "image": myImage7,
+            "country": "Kenya",
             "price": "254",
             "currency": "SAR",
+            "path": "/visa-search-resul-kenya"
+        },
+        {
+            "UID": "7",
+            "image": myImage8,
+            "country": "Nepal",
+            "price": "254",
+            "currency": "SAR",
+            "path": "/visa-search-resul-nepal"
+
+        },
+        {
+            "UID": "7",
+            "image": myImage9,
+            "country": "Seychelles",
+            "price": "254",
+            "currency": "SAR",
+            "path": "/visa-search-resul-seychelles"
+
+        }, {
+            "UID": "7",
+            "image": myImage10,
+            "country": "Ivory",
+            "price": "254",
+            "currency": "SAR",
+            "path": "/visa-search-resul-ivory"
+
+        },{
+            "UID": "7",
+            "image": myImage11,
+            "country": "Saudi Arabia",
+            "price": "254",
+            "currency": "SAR",
+            "path": "/visa-search-resul-ivory-saudi-rabia"
         },
 
 
@@ -159,6 +221,7 @@ const Visa = () => {
 
                             <div className="col-lg-3 col-md-4 col-12">
                                 <div className=""><img
+                                    style={{ height: '350px',  }}
                                     className="w-100"
                                     src={trip.image}
                                     alt=""

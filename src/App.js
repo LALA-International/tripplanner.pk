@@ -40,6 +40,15 @@ import UmrahSelectedFlight from "./Components/UmrahPackage/UmrahSelectedFlight";
 import UmrahVisaSearchResult from "./Components/UmrahPackage/UmrahVisaSearchResult";
 import VisaSearchResultThailand from "./Components/Visa/VisaSearchResultThailand";
 import VisaSearchResultMalaysia from "./Components/Visa/VisaSearchResultMalaysia";
+import VisaSearchResultDubai from "./Components/Visa/VisaSearchResultDubai";
+import VisaSearchResultAzerbaijan from "./Components/Visa/VisaSearchResultAzerbaijan";
+import VisaSearchResultBahrain from "./Components/Visa/VisaSearchResultBahrain";
+import VisaSearchResultSingapore  from "./Components/Visa/VisaSearchResultSingapore";
+import VisaSearchResultKenya  from "./Components/Visa/VisaSearchResultKenya";
+import VisaSearchResultNepal  from "./Components/Visa/VisaSearchResultNepal";
+import VisaSearchResultSeychelles  from "./Components/Visa/VisaSearchResultSeychelles";
+import VisaSearchResultIvory  from "./Components/Visa/VisaSearchResultIvory";
+import VisaSearchResultSaudiArabia  from "./Components/Visa/VisaSearchResultSaudiArabia";
 import ContinueBookingCustomizeUmrah from "./Components/UmrahPackage/ContinueBookingCustomizeUmrah";
 import UmrahBookingConfirm from "./Components/UmrahPackage/UmrahBookingConfirm";
 import TourDetail from "./Components/TourDetail";
@@ -124,6 +133,15 @@ function App() {
                 <Route path="hotel-search-result" element={<HotelSearchResult />} />
                 <Route path="visa-search-resul-thailand" element={<VisaSearchResultThailand />} />
                 <Route path="visa-search-resul-malayshia" element={<VisaSearchResultMalaysia />} />
+                <Route path="visa-search-resul-dubai" element={<VisaSearchResultDubai />} />
+                <Route path="visa-search-resul-azerbaijan" element={<VisaSearchResultAzerbaijan />} />
+                <Route path="visa-search-resul-bahrain" element={<VisaSearchResultBahrain />} />
+                <Route path="visa-search-resul-singapore" element={<VisaSearchResultSingapore  />} />
+                <Route path="visa-search-resul-kenya" element={<VisaSearchResultKenya  />} />
+                <Route path="visa-search-resul-nepal" element={<VisaSearchResultNepal   />} />
+                <Route path="visa-search-resul-seychelles" element={<VisaSearchResultSeychelles   />} />
+                <Route path="visa-search-resul-ivory" element={<VisaSearchResultIvory   />} />
+                <Route path="visa-search-resul-ivory-saudi-rabia" element={<VisaSearchResultSaudiArabia   />} />
                 <Route path="continue-booking-visa" element={<ContinueBookingVisa />} />
                 <Route path="visa-booking-confirm" element={<VisaBookingConfirm />} />
                 <Route
